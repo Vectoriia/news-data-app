@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import * as fs from 'fs-extra';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 @Injectable()
 export class NewsService {
-  // TODO create env
-  private readonly API_KEY = 'pub_75545638ae93899819f68eaa8703b63e74a06';
-  private readonly API_URL = 'https://newsdata.io/api/1';
-  private readonly FILE_PATH = './data/news.json';
+  private readonly API_KEY = process.env.NEWS_API_KEY;
+  private readonly API_URL = process.env.NEWS_API_URL;
+  private readonly FILE_PATH = process.env.NEWS_FILE_PATH;
 
   async fetchNews(query: string, count: number): Promise<any> {
     try {
