@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { NewsSqlService } from '../services/news-sql.service';
 
@@ -26,5 +26,17 @@ export class SqlNewsController {
   @Get('search')
   async searchSql(@Query('keyword') keyword: string) {
     return this.sqlService.search(keyword);
+  }
+
+  @ApiOperation({ summary: 'Згенерувати мок-дані новин' })
+  @ApiQuery({
+    name: 'count',
+    required: false,
+    type: Number,
+    description: 'Кількість новин (default = 10000)',
+  })
+  @Post('generate-mock')
+  async generateMock(@Query('count') count = 10000): Promise<string> {
+    return this.sqlService.generateMockNews(Number(count));
   }
 }

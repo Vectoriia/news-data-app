@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { NewsMongoService } from '../services/news-mongo.service';
 
@@ -27,5 +27,16 @@ export class MongoNewsController {
   @Get('search')
   async searchMongo(@Query('keyword') keyword: string) {
     return this.mongoService.search(keyword);
+  }
+  @ApiOperation({ summary: 'Згенерувати мок-дані новин' })
+  @ApiQuery({
+    name: 'count',
+    required: false,
+    type: Number,
+    description: 'Кількість новин (default = 10000)',
+  })
+  @Post('generate-mock')
+  async generateMock(@Query('count') count = 10000): Promise<string> {
+    return this.mongoService.generateMockNews(Number(count));
   }
 }
